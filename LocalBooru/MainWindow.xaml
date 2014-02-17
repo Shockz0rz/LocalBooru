@@ -4,8 +4,10 @@
         Title="LocalBooru Search" Height="350" Width="525">
     <Grid>
         <TextBlock x:Name="TitleBlock" HorizontalAlignment="Center" Margin="10,10,10,0" TextWrapping="Wrap" Text="LocalBooru" VerticalAlignment="Top" TextAlignment="Center" Foreground="#FF00ADEF" Height="77" Width="497" FontWeight="Bold" FontSize="64"/>
-        <TextBox x:Name="searchBox" HorizontalAlignment="Left" Height="20" Margin="10,121,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="420"/>
-        <TextBlock HorizontalAlignment="Left" Height="20" Margin="10,121,0,0" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top" Width="420"/>
+        <TextBox x:Name="searchBox" HorizontalAlignment="Left" Height="22" Margin="10,121,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="420"/>
+        <TextBlock x:Name="defaultText" HorizontalAlignment="Left" Height="22" Margin="13,121,0,0" TextWrapping="Wrap" Text="Enter tags to search for, separated by commas." VerticalAlignment="Top" Width="417
+                   " Opacity="0.5" FontStyle="Italic" MouseLeftButtonDown="EraseDefaultText"/>
+        <Button x:Name="searchButton" Content="Go" HorizontalAlignment="Left" Margin="430,121,0,0" VerticalAlignment="Top" Width="75"/>
 
     </Grid>
 </Window>

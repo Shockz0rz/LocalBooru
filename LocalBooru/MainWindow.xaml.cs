@@ -24,5 +24,18 @@ namespace LocalBooru
         {
             InitializeComponent();
         }
+
+        private void ListBox_SelectionChanged_1(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
+
+        private void EraseDefaultText(object sender, MouseButtonEventArgs e)
+        {
+            if (e.ClickCount >= 1 && sender == defaultText)
+            {
+
+            }
+        }
     }
 }
