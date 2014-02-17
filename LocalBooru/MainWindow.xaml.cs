@@ -20,9 +20,11 @@ namespace LocalBooru
     /// </summary>
     public partial class MainWindow : Window
     {
+        bool defaultTextErased;
         public MainWindow()
         {
             InitializeComponent();
+            defaultTextErased = false;
         }
 
         private void ListBox_SelectionChanged_1(object sender, SelectionChangedEventArgs e)
@@ -30,12 +32,19 @@ namespace LocalBooru
 
         }
 
-        private void EraseDefaultText(object sender, MouseButtonEventArgs e)
+        private void EraseDefaultText(object sender, RoutedEventArgs e)
         {
-            if (e.ClickCount >= 1 && sender == defaultText)
+            if (!defaultTextErased && sender == searchBox)
             {
-
+                defaultTextErased = true;
+                searchBox.Text = "";
+                searchBox.Foreground = new SolidColorBrush(Color.FromRgb(0, 0, 0));
             }
+        }
+
+        private void InitiateSearch(object sender, RoutedEventArgs e)
+        {
+            Console.WriteLine("Search initiated");
         }
     }
 }
