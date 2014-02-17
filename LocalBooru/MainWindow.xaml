@@ -1,8 +1,11 @@
-﻿<Window x:Class="LocalBooru.MainWindow"
+﻿<Window x:Name="LocalBooru_Search" x:Class="LocalBooru.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="MainWindow" Height="350" Width="525">
+        Title="LocalBooru Search" Height="350" Width="525">
     <Grid>
-        
+        <TextBlock x:Name="TitleBlock" HorizontalAlignment="Center" Margin="10,10,10,0" TextWrapping="Wrap" Text="LocalBooru" VerticalAlignment="Top" TextAlignment="Center" Foreground="#FF00ADEF" Height="77" Width="497" FontWeight="Bold" FontSize="64"/>
+        <TextBox x:Name="searchBox" HorizontalAlignment="Left" Height="20" Margin="10,121,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="420"/>
+        <TextBlock HorizontalAlignment="Left" Height="20" Margin="10,121,0,0" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top" Width="420"/>
+
     </Grid>
 </Window>
