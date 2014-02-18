@@ -13,5 +13,9 @@ namespace LocalBooru
     /// </summary>
     public partial class App : Application
     {
+        private void CreateTable()
+        {
+
+        }
     }
 }
