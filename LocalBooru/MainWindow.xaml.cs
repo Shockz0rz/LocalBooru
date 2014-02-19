@@ -68,7 +68,7 @@ namespace LocalBooru
             command1.CommandText = "select * from test1";
             thingy2 = command1.ExecuteReader();
             thingy2.Read();
-            for (int i = 0; i < 3; i++)
+            foreach (var line in thingy2)
             {
                 Console.WriteLine(thingy2.GetString(0) + " " + thingy2.GetString(1) + " is " + thingy2.GetInt64(2).ToString() + " years old.");
                 thingy2.Read();
