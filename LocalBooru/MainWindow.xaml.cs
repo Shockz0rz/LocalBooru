@@ -33,7 +33,7 @@ namespace LocalBooru
             defaultTextErased = false;
             fact = DbProviderFactories.GetFactory("System.Data.SQLite");
             cnn = fact.CreateConnection();
-            cnn.ConnectionString = "Data Source=C:\\Users\\Andrew\\Documents\\LocalBooru\\test.db";
+            cnn.ConnectionString = "Data Source=C:\\Users\\Andrew\\Documents\\LocalBooru\\tagdb.db";
             cnn.Open();
             Console.WriteLine(cnn.State);
             thingy = fact.CreateDataAdapter();
@@ -57,22 +57,38 @@ namespace LocalBooru
         private void InitiateSearch(object sender, RoutedEventArgs e)
         {
             Console.WriteLine("Search initiated");
-            testGetDB();
+            string searchString = searchBox.Text;
+            List<String> tags = new List<String>();
+            foreach (string tag in searchString.Split(new Char[] { ',' }))
+            {
+                tags.Add(tag.Trim());
+            }
+            testGetDB(tags);
         }
 
-        void testGetDB()
+        void testGetDB(List<String> searchTags)
         {
-            DbDataReader thingy2;
+            DbDataReader reader;
             DbCommand command1 = cnn.CreateCommand();
-            cnn.BeginTransaction();
-            command1.CommandText = "select * from test1";
-            thingy2 = command1.ExecuteReader();
-            thingy2.Read();
-            foreach (var line in thingy2)
+            StringBuilder sqlCommand = new StringBuilder();
+            sqlCommand.AppendLine("SELECT c.*");
+            sqlCommand.AppendLine("FROM Tagmap tm, Content c, Tags t");
+            sqlCommand.AppendLine("WHERE tm.tag_id = t.tag_id");
+            sqlCommand.Append("AND (t.name IN (");
+            foreach (string tag in searchTags)
             {
-                Console.WriteLine(thingy2.GetString(0) + " " + thingy2.GetString(1) + " is " + thingy2.GetInt64(2).ToString() + " years old.");
-                thingy2.Read();
+                sqlCommand.Append("'" + tag + "', ");
             }
+            sqlCommand.Remove(sqlCommand.Length - 2, 2);
+            sqlCommand.AppendLine("))");
+            sqlCommand.AppendLine("AND c.id = tm.content_id");
+            sqlCommand.AppendLine("GROUP BY c.id");
+            sqlCommand.AppendLine("HAVING COUNT( c.id ) = 3;");
+            cnn.BeginTransaction();
+            command1.CommandText = sqlCommand.ToString();
+            reader = command1.ExecuteReader();
+            
+            cnn.Close();
         }
     }
 }
