@@ -27,6 +27,7 @@ namespace LocalBooru
         DbProviderFactory fact;
         SQLiteDataAdapter thingy;
         SQLiteConnection cnn;
+        List<SearchResult> resultList;
         public MainWindow()
         {
             InitializeComponent();
@@ -61,7 +62,7 @@ namespace LocalBooru
             List<String> tags = new List<String>();
             foreach (string tag in searchString.Split(new Char[] { ',' }))
             {
-                tags.Add(tag.Trim().Replace("'","''"));
+                tags.Add(tag.Trim().Replace("'","''").ToLower());
             }
             testGetDB(tags);
         }
@@ -71,9 +72,10 @@ namespace LocalBooru
             SQLiteDataReader reader;
             SQLiteCommand command1 = cnn.CreateCommand();
             StringBuilder sqlCommand = new StringBuilder();
+            resultList = new List<SearchResult>();
             sqlCommand.Append("SELECT c.* ");
             sqlCommand.Append("FROM Tagmap tm, Content c, Tags t ");
-            sqlCommand.Append("WHERE tm.tag_id = t.id ");
+            sqlCommand.Append("WHERE tm.tag_id = t.oid ");
             sqlCommand.Append("AND (t.name IN (");
             foreach (string tag in searchTags)
             {
@@ -81,17 +83,28 @@ namespace LocalBooru
             }
             sqlCommand.Remove(sqlCommand.Length - 2, 2);
             sqlCommand.Append(")) ");
-            sqlCommand.Append("AND c.id = tm.content_id ");
-            sqlCommand.Append("GROUP BY c.id ");
-            sqlCommand.Append("HAVING COUNT( c.id ) = " + searchTags.Count + ";");
+            sqlCommand.Append("AND c.oid = tm.content_id ");
+            sqlCommand.Append("GROUP BY c.oid ");
+            sqlCommand.Append("HAVING COUNT( c.oid ) = " + searchTags.Count + ";");
             cnn.BeginTransaction();
             command1.CommandText = sqlCommand.ToString();
             reader = command1.ExecuteReader();
-            foreach (var row in reader)
+            foreach (var result in reader)
             {
-                resultBox.Items.Add(row);
+                Object[] resultValues = new Object[4];
+                reader.GetValues(resultValues);
+                string name = resultValues[0].ToString();
+                string locationType = resultValues[1].ToString();
+                string location = resultValues[2].ToString();
+                string type = resultValues[3].ToString();
+                resultList.Add(new SearchResult(name, locationType, location, type));
+                
             }
             cnn.Close();
+            foreach (SearchResult result in resultList)
+            {
+                Console.WriteLine(result.ToString());
+            }
         }
     }
 }

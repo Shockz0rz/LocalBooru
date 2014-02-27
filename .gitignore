@@ -15,7 +15,7 @@ local.properties
 .classpath
 .settings/
 .loadpath
-
+Assets/GitIgnore/
 # External tool builders
 .externalToolBuilders/
 
