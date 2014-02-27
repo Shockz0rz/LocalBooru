@@ -9,7 +9,7 @@
         <Button x:Name="settingsButton" HorizontalAlignment="Left" Margin="477,10,0,0" VerticalAlignment="Top" Width="32" Height="32" RenderTransformOrigin="-0.233,1.2" Background="#00000000" BorderBrush="#7F707070">
             <Image x:Name="settingsIcon" Height="30" Width="30" Margin="0" HorizontalAlignment="Left" VerticalAlignment="Top" Stretch="Fill" Source="Assets/gearicon.png" Opacity="0.25"/>
         </Button>
-        <DataGrid x:Name="resultGrid" HorizontalAlignment="Left" Height="163" Margin="10,146,0,0" VerticalAlignment="Top" Width="497"/>
+        <DataGrid x:Name="resultBox" HorizontalAlignment="Left" Height="150" Margin="10,159,0,0" VerticalAlignment="Top" Width="497"/>
 
     </Grid>
 </Window>

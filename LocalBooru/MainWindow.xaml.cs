@@ -25,18 +25,18 @@ namespace LocalBooru
     {
         bool defaultTextErased;
         DbProviderFactory fact;
-        DbDataAdapter thingy;
-        DbConnection cnn;
+        SQLiteDataAdapter thingy;
+        SQLiteConnection cnn;
         public MainWindow()
         {
             InitializeComponent();
             defaultTextErased = false;
             fact = DbProviderFactories.GetFactory("System.Data.SQLite");
-            cnn = fact.CreateConnection();
+            cnn = (SQLiteConnection)fact.CreateConnection();
             cnn.ConnectionString = "Data Source=C:\\Users\\Andrew\\Documents\\LocalBooru\\tagdb.db";
             cnn.Open();
             Console.WriteLine(cnn.State);
-            thingy = fact.CreateDataAdapter();
+            thingy = (SQLiteDataAdapter)fact.CreateDataAdapter();
         }
 
         private void ListBox_SelectionChanged_1(object sender, SelectionChangedEventArgs e)
@@ -61,33 +61,36 @@ namespace LocalBooru
             List<String> tags = new List<String>();
             foreach (string tag in searchString.Split(new Char[] { ',' }))
             {
-                tags.Add(tag.Trim());
+                tags.Add(tag.Trim().Replace("'","''"));
             }
             testGetDB(tags);
         }
 
         void testGetDB(List<String> searchTags)
         {
-            DbDataReader reader;
-            DbCommand command1 = cnn.CreateCommand();
+            SQLiteDataReader reader;
+            SQLiteCommand command1 = cnn.CreateCommand();
             StringBuilder sqlCommand = new StringBuilder();
-            sqlCommand.AppendLine("SELECT c.*");
-            sqlCommand.AppendLine("FROM Tagmap tm, Content c, Tags t");
-            sqlCommand.AppendLine("WHERE tm.tag_id = t.tag_id");
+            sqlCommand.Append("SELECT c.* ");
+            sqlCommand.Append("FROM Tagmap tm, Content c, Tags t ");
+            sqlCommand.Append("WHERE tm.tag_id = t.id ");
             sqlCommand.Append("AND (t.name IN (");
             foreach (string tag in searchTags)
             {
                 sqlCommand.Append("'" + tag + "', ");
             }
             sqlCommand.Remove(sqlCommand.Length - 2, 2);
-            sqlCommand.AppendLine("))");
-            sqlCommand.AppendLine("AND c.id = tm.content_id");
-            sqlCommand.AppendLine("GROUP BY c.id");
-            sqlCommand.AppendLine("HAVING COUNT( c.id ) = 3;");
+            sqlCommand.Append(")) ");
+            sqlCommand.Append("AND c.id = tm.content_id ");
+            sqlCommand.Append("GROUP BY c.id ");
+            sqlCommand.Append("HAVING COUNT( c.id ) = " + searchTags.Count + ";");
             cnn.BeginTransaction();
             command1.CommandText = sqlCommand.ToString();
             reader = command1.ExecuteReader();
-            
+            foreach (var row in reader)
+            {
+                resultBox.Items.Add(row);
+            }
             cnn.Close();
         }
     }
