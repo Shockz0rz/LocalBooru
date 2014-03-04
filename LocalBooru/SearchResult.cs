@@ -45,6 +45,11 @@ namespace LocalBooru
             type = inType;
         }
 
+        public SearchResult()
+        {
+            // TODO: Complete member initialization
+        }
+
         public string ToString()
         {
             string outString = "Result " + name + ": Location type " + locationType + ", location " + location + ", content type " + type + ".";

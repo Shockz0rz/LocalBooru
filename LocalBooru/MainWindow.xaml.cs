@@ -91,14 +91,11 @@ namespace LocalBooru
             reader = command1.ExecuteReader();
             foreach (var result in reader)
             {
-                Object[] resultValues = new Object[4];
-                reader.GetValues(resultValues);
-                string name = resultValues[0].ToString();
-                string locationType = resultValues[1].ToString();
-                string location = resultValues[2].ToString();
-                string type = resultValues[3].ToString();
-                resultList.Add(new SearchResult(name, locationType, location, type));
-                
+                string newName = reader.GetString(reader.GetOrdinal("name"));
+                string newLocationType = reader.GetString(reader.GetOrdinal("locationType"));
+                string newLocation = reader.GetString(reader.GetOrdinal("location"));
+                string newType = reader.GetString(reader.GetOrdinal("contentType"));
+                resultList.Add(new SearchResult(newName, newLocationType, newLocation, newType));
             }
             cnn.Close();
             foreach (SearchResult result in resultList)
